@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daily Lunch Menu</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+        }
+        #date {
+            font-size: 1.2em;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        details {
+            margin-bottom: 10px;
+        }
+        summary {
+            cursor: pointer;
+            font-weight: bold;
+        }
+        ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        li {
+            margin-bottom: 5px;
+        }
+        .section {
+            margin-bottom: 15px;
+        }
+        .special {
+            text-align: center;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <h1>Daily Lunch Menu</h1>
+    <div id="date"></div>
+    <div id="menu"></div>
+
+    <script>
+        const menuData = {
+            "week1": [
+                ["BROCCOLI CORIANDER SOUP", "GREEN SALAD", "CHAPATI", "BREAD ROLL", "CHEESEY BAKED PASTA", "PANEER KOFTA CURRY", "SULTANI DAL", "PLAIN RICE", "GULAB JAMUN"],
+                ["VEG CLEAR SOUP", "BLACK CHANA SUNDAL", "CHAPATI", "GARLIC ROLL", "BUTTERED VEG RICE", "PUNJABI ALOO GOBI MASALA", "DAL MAHARAJA", "PLAIN RICE", "MILK CAKE"],
+                ["CABBAGE BROTH", "CUCUMBER MINT SALAD", "CHAPATI", "BREAD ROLL", "KOREAN STYLE STIR FRIED NOODLES", "VEG MAKHANWALA", "RAJASTHANI DAL", "PLAIN RICE", "ICE CREAM"],
+                ["MANCHOW SOUP", "KOSUMBARI SALAD", "CHAPATI", "FRENCH LOAF", "ROASTED ITALIAN VEG", "AMRITSARI CHOLE MASALA", "SAMBAR", "PLAIN RICE", "PINEAPPLE PASTRY"],
+                ["special"],
+                ["MINESTRONE SOUP", "GREEN SALAD", "MOOLI PARATHA", "BREAD ROLL", "CHILLI CAULIFLOWER", "PARWAL ALOO", "DAL TIRANGI", "PLAIN RICE", "RASGULLA"],
+                ["SWEET CORN VEG SOUP", "LACHHAA ONION SALAD", "BHATURA", "ROASTED POTATO WEDGES", "PINDI CHOLE", "BUTTER CHICKEN", "DAL DHANSAK", "PLAIN RICE", "CHOCOLATE SQUARE"]
+            ],
+            "week2": [
+                ["POTATO & LEEKS BROTH", "GREEN GODDESS SALAD", "CHAPATI", "BREAD ROLL", "PESTO PASTA", "ALOO MIRCHI MAKHAI LAJAWAB", "DAL MAKHANI", "PLAIN RICE", "JELLY (Gelatin only)"],
+                ["TOM YUM SOUP", "TOSSED VEG IN LEMON VINAIGRETTE", "CHAPATI", "BROWN ONION BREAD ROLL", "BAKED VEG WITH SWEET POTATO", "VEG LABABDAR", "SAMBAR", "PLAIN RICE", "JALEBI"],
+                ["CREAM OF GREEN PEAS SOUP", "KUCHUMBER SALAD", "CHAPATI", "BREAD ROLL", "STIR FRY THAI VEG", "RAJASTHANI RAJMA MASALA", "MASALA DAL FRY", "PLAIN RICE", "COLUMBIAN COFFEE CAKE"],
+                ["VEG SHORBA", "SPROUTS SALAD", "CHAPATI", "MULTIGRAIN BREAD ROLL", "TEX MEX FRIED RICE", "DAHI BHINDI CURRY", "GREEN MOONG DAL TADKA", "PLAIN RICE", "MOTICHOOR LADOO"],
+                ["special"],
+                ["HOT & SOUR VEG SOUP", "CUCUMBER MINT SALAD", "CHAPATI", "BREAD ROLL", "GOBI MANCHURIAN", "MUTTER PANEER", "DAL MAHARANI", "PLAIN RICE", "BROWNIE"],
+                ["CREAM OF TOMATO SOUP", "RUSSIAN SALAD", "VEG QUESADILLAS", "CHICKEN QUESADILLAS", "CAULIFLOWER 65", "ALOO JEERA DRY", "PALAK DAL", "PLAIN RICE", "KALA JAMUN"]
+            ],
+            "week3": [
+                ["HOT & SOUR VEG SOUP", "GREEN SALAD", "CHAPATI", "BREAD ROLL", "SCHEZWAN NOODLES", "ACHARI BHINDI", "PUNJABI DAL", "PLAIN RICE", "MYSORE PAK"],
+                ["CREAM OF VEG SOUP", "GREEN MOONG DAL SUNDAL", "CHAPATI", "ONION CHEESE ROLL", "PASTA IN PINK SAUCE", "ALOO CHOLE MASALA", "SAMBAR", "PLAIN RICE", "CHOCOLATE TRUFFLE PASTRY"],
+                ["CAULIFLOWER BROTH", "VEG JULIENNE SALAD", "CHAPATI", "BREAD ROLL", "BAKED VEG MEXICANA", "KADI PAKODI", "DAL BHUKARA", "PLAIN RICE", "SWEET BOONDI"],
+                ["ROASTED PUMPKIN SOUP", "CUCUMBER YOGURT SALAD", "CHAPATI", "CUSTARD FRENCH LOAF", "SAUTÉD ORIENTAL VEG", "KADAI PANEER", "MOONG DAL TADKA", "PLAIN RICE", "MANGO BURFI"],
+                ["special"],
+                ["VEG CLEAR SOUP", "INDIAN VEG SALAD", "ALOO PARATHA", "BREAD ROLL", "RATATOUILLE", "VEG AWADI KHORMA", "SUKHI METHI DAL", "PLAIN RICE", "ANGURI RABDI"],
+                ["RASAM", "LACCHA ONION SALAD", "BHATURA", "MEDITERRANEAN VEG STEW", "CHICKEN JALFREZI", "PINDI CHOLE MASALA", "DAL PAKWAN", "PLAIN RICE", "FRUIT GATEAUX"]
+            ]
+        };
+
+        const weeks = [menuData.week1, menuData.week2, menuData.week3];
+
+        // Anchor date: February 3, 2026 (Tuesday, week 2)
+        const anchorDate = new Date(2026, 1, 3); // Month is 0-indexed in JS
+
+        // Anchor cycle day: 8 (week2 Tuesday, where week1 Mon=0, ..., week2 Mon=7, week2 Tue=8, etc.)
+        const anchorCycleDay = 8;
+
+        const now = new Date();
+        let displayDate = new Date(now);
+
+        // If after 2 PM (14:00), show next day's menu
+        if (now.getHours() >= 14) {
+            displayDate.setDate(displayDate.getDate() + 1);
+        }
+
+        // Calculate days since anchor
+        const timeDiff = displayDate - anchorDate;
+        const daysSinceAnchor = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+
+        // Calculate cycle day (0 to 20)
+        const cycleLength = 21;
+        const cycleDay = ((daysSinceAnchor + anchorCycleDay) % cycleLength + cycleLength) % cycleLength;
+
+        // Determine week and day in week
+        const weekIndex = Math.floor(cycleDay / 7); // 0: week1, 1: week2, 2: week3
+        const dayInWeek = cycleDay % 7; // 0: Mon, 1: Tue, ..., 6: Sun
+
+        // Get the menu for the day
+        const dailyMenu = weeks[weekIndex][dayInWeek];
+
+        // Display date
+        document.getElementById('date').textContent = displayDate.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+
+        const menuContainer = document.getElementById('menu');
+
+        if (dailyMenu.length === 1 && dailyMenu[0] === 'special') {
+            const specialDiv = document.createElement('div');
+            specialDiv.className = 'special';
+            specialDiv.textContent = 'Special Menu Today';
+            menuContainer.appendChild(specialDiv);
+        } else {
+            // Assume standard 9 items
+            const sidesItems = [dailyMenu[0], dailyMenu[1], dailyMenu[2], dailyMenu[3], dailyMenu[7]]; // Soup, Salad, Bread1, Bread2, Rice
+            const main1 = dailyMenu[4];
+            const main2 = dailyMenu[5];
+            const main3 = dailyMenu[6];
+            const dessert = dailyMenu[8];
+
+            // Sides (collapsible)
+            const details = document.createElement('details');
+            const summary = document.createElement('summary');
+            summary.textContent = 'Sides';
+            details.appendChild(summary);
+
+            const sidesList = document.createElement('ul');
+            sidesItems.forEach(item => {
+                const li = document.createElement('li');
+                li.textContent = item;
+                sidesList.appendChild(li);
+            });
+            details.appendChild(sidesList);
+            menuContainer.appendChild(details);
+
+            // Mains and Dessert
+            const main1Div = document.createElement('div');
+            main1Div.className = 'section';
+            main1Div.textContent = `Main 1: ${main1}`;
+            menuContainer.appendChild(main1Div);
+
+            const main2Div = document.createElement('div');
+            main2Div.className = 'section';
+            main2Div.textContent = `Main 2: ${main2}`;
+            menuContainer.appendChild(main2Div);
+
+            const main3Div = document.createElement('div');
+            main3Div.className = 'section';
+            main3Div.textContent = `Main 3: ${main3}`;
+            menuContainer.appendChild(main3Div);
+
+            const dessertDiv = document.createElement('div');
+            dessertDiv.className = 'section';
+            dessertDiv.textContent = `Dessert: ${dessert}`;
+            menuContainer.appendChild(dessertDiv);
+        }
+    </script>
+</body>
+</html>
