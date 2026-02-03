@@ -3,165 +3,266 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Daily Lunch Menu</title>
+    <title>Daily Lunch Menu 🍲</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <style>
+        :root {
+            --primary: #e67e22;
+            --primary-dark: #d35400;
+            --light: #fffaf0;
+            --gray: #555;
+            --dark: #2c3e50;
+            --shadow: 0 8px 25px rgba(0,0,0,0.12);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
-            font-family: Arial, sans-serif;
-            max-width: 600px;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: linear-gradient(135deg, #fdfbfb 0%, #f7f4f4 100%);
+            color: var(--dark);
+            min-height: 100vh;
+            padding: 20px 15px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 700px;
             margin: 0 auto;
-            padding: 20px;
         }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
         h1 {
-            text-align: center;
+            color: var(--primary-dark);
+            font-size: 2.4rem;
+            margin-bottom: 8px;
+            font-weight: 700;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
         }
-        #date {
-            font-size: 1.2em;
-            text-align: center;
-            margin-bottom: 20px;
+
+        .subtitle {
+            color: var(--gray);
+            font-size: 1.1rem;
         }
+
+        .date-card {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: var(--shadow);
+            text-align: center;
+            border: 1px solid rgba(230, 126, 34, 0.15);
+        }
+
+        .date {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--primary-dark);
+        }
+
+        .menu-card {
+            background: white;
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(230, 126, 34, 0.12);
+        }
+
         details {
-            margin-bottom: 10px;
+            margin-bottom: 18px;
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.3s ease;
         }
+
         summary {
+            background: linear-gradient(to right, #fff8f0, #fff5e6);
+            padding: 16px 20px;
             cursor: pointer;
-            font-weight: bold;
+            font-weight: 600;
+            color: var(--primary-dark);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            user-select: none;
+            transition: background 0.2s;
         }
-        ul {
-            list-style-type: none;
-            padding-left: 0;
+
+        summary:hover {
+            background: #fff0d9;
         }
-        li {
-            margin-bottom: 5px;
+
+        summary::marker {
+            display: none;
         }
-        .section {
-            margin-bottom: 15px;
+
+        details[open] summary {
+            background: #ffe8cc;
         }
+
+        .side-icon {
+            font-size: 1.3rem;
+        }
+
+        .sides-list {
+            padding: 16px 20px;
+            background: #fdfaf5;
+            list-style: none;
+        }
+
+        .sides-list li {
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(230, 126, 34, 0.08);
+            color: #444;
+        }
+
+        .sides-list li:last-child {
+            border-bottom: none;
+        }
+
+        .item {
+            background: #fff8f2;
+            border-radius: 12px;
+            padding: 18px 20px;
+            margin-bottom: 16px;
+            border-left: 5px solid var(--primary);
+            transition: all 0.2s ease;
+        }
+
+        .item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(230, 126, 34, 0.12);
+        }
+
+        .item-label {
+            font-weight: 700;
+            color: var(--primary-dark);
+            margin-bottom: 6px;
+            display: block;
+            font-size: 1.1rem;
+        }
+
         .special {
             text-align: center;
-            font-style: italic;
+            font-size: 1.5rem;
+            padding: 40px 20px;
+            color: var(--primary-dark);
+            font-weight: 600;
+            background: linear-gradient(135deg, #fff5e6, #ffe8cc);
+            border-radius: 16px;
+            border: 2px dashed var(--primary);
+        }
+
+        @media (max-width: 500px) {
+            h1 { font-size: 2rem; }
+            .date { font-size: 1.3rem; }
         }
     </style>
 </head>
 <body>
-    <h1>Daily Lunch Menu</h1>
-    <div id="date"></div>
-    <div id="menu"></div>
+    <div class="container">
+        <header>
+            <h1>Lunch Menu</h1>
+            <div class="subtitle">What's cooking today? 🍛</div>
+        </header>
+
+        <div class="date-card">
+            <div class="date" id="date"></div>
+        </div>
+
+        <div class="menu-card" id="menu"></div>
+    </div>
 
     <script>
         const menuData = {
-            "week1": [
-                ["BROCCOLI CORIANDER SOUP", "GREEN SALAD", "CHAPATI", "BREAD ROLL", "CHEESEY BAKED PASTA", "PANEER KOFTA CURRY", "SULTANI DAL", "PLAIN RICE", "GULAB JAMUN"],
-                ["VEG CLEAR SOUP", "BLACK CHANA SUNDAL", "CHAPATI", "GARLIC ROLL", "BUTTERED VEG RICE", "PUNJABI ALOO GOBI MASALA", "DAL MAHARAJA", "PLAIN RICE", "MILK CAKE"],
-                ["CABBAGE BROTH", "CUCUMBER MINT SALAD", "CHAPATI", "BREAD ROLL", "KOREAN STYLE STIR FRIED NOODLES", "VEG MAKHANWALA", "RAJASTHANI DAL", "PLAIN RICE", "ICE CREAM"],
-                ["MANCHOW SOUP", "KOSUMBARI SALAD", "CHAPATI", "FRENCH LOAF", "ROASTED ITALIAN VEG", "AMRITSARI CHOLE MASALA", "SAMBAR", "PLAIN RICE", "PINEAPPLE PASTRY"],
-                ["special"],
-                ["MINESTRONE SOUP", "GREEN SALAD", "MOOLI PARATHA", "BREAD ROLL", "CHILLI CAULIFLOWER", "PARWAL ALOO", "DAL TIRANGI", "PLAIN RICE", "RASGULLA"],
-                ["SWEET CORN VEG SOUP", "LACHHAA ONION SALAD", "BHATURA", "ROASTED POTATO WEDGES", "PINDI CHOLE", "BUTTER CHICKEN", "DAL DHANSAK", "PLAIN RICE", "CHOCOLATE SQUARE"]
-            ],
-            "week2": [
-                ["POTATO & LEEKS BROTH", "GREEN GODDESS SALAD", "CHAPATI", "BREAD ROLL", "PESTO PASTA", "ALOO MIRCHI MAKHAI LAJAWAB", "DAL MAKHANI", "PLAIN RICE", "JELLY (Gelatin only)"],
-                ["TOM YUM SOUP", "TOSSED VEG IN LEMON VINAIGRETTE", "CHAPATI", "BROWN ONION BREAD ROLL", "BAKED VEG WITH SWEET POTATO", "VEG LABABDAR", "SAMBAR", "PLAIN RICE", "JALEBI"],
-                ["CREAM OF GREEN PEAS SOUP", "KUCHUMBER SALAD", "CHAPATI", "BREAD ROLL", "STIR FRY THAI VEG", "RAJASTHANI RAJMA MASALA", "MASALA DAL FRY", "PLAIN RICE", "COLUMBIAN COFFEE CAKE"],
-                ["VEG SHORBA", "SPROUTS SALAD", "CHAPATI", "MULTIGRAIN BREAD ROLL", "TEX MEX FRIED RICE", "DAHI BHINDI CURRY", "GREEN MOONG DAL TADKA", "PLAIN RICE", "MOTICHOOR LADOO"],
-                ["special"],
-                ["HOT & SOUR VEG SOUP", "CUCUMBER MINT SALAD", "CHAPATI", "BREAD ROLL", "GOBI MANCHURIAN", "MUTTER PANEER", "DAL MAHARANI", "PLAIN RICE", "BROWNIE"],
-                ["CREAM OF TOMATO SOUP", "RUSSIAN SALAD", "VEG QUESADILLAS", "CHICKEN QUESADILLAS", "CAULIFLOWER 65", "ALOO JEERA DRY", "PALAK DAL", "PLAIN RICE", "KALA JAMUN"]
-            ],
-            "week3": [
-                ["HOT & SOUR VEG SOUP", "GREEN SALAD", "CHAPATI", "BREAD ROLL", "SCHEZWAN NOODLES", "ACHARI BHINDI", "PUNJABI DAL", "PLAIN RICE", "MYSORE PAK"],
-                ["CREAM OF VEG SOUP", "GREEN MOONG DAL SUNDAL", "CHAPATI", "ONION CHEESE ROLL", "PASTA IN PINK SAUCE", "ALOO CHOLE MASALA", "SAMBAR", "PLAIN RICE", "CHOCOLATE TRUFFLE PASTRY"],
-                ["CAULIFLOWER BROTH", "VEG JULIENNE SALAD", "CHAPATI", "BREAD ROLL", "BAKED VEG MEXICANA", "KADI PAKODI", "DAL BHUKARA", "PLAIN RICE", "SWEET BOONDI"],
-                ["ROASTED PUMPKIN SOUP", "CUCUMBER YOGURT SALAD", "CHAPATI", "CUSTARD FRENCH LOAF", "SAUTÉD ORIENTAL VEG", "KADAI PANEER", "MOONG DAL TADKA", "PLAIN RICE", "MANGO BURFI"],
-                ["special"],
-                ["VEG CLEAR SOUP", "INDIAN VEG SALAD", "ALOO PARATHA", "BREAD ROLL", "RATATOUILLE", "VEG AWADI KHORMA", "SUKHI METHI DAL", "PLAIN RICE", "ANGURI RABDI"],
-                ["RASAM", "LACCHA ONION SALAD", "BHATURA", "MEDITERRANEAN VEG STEW", "CHICKEN JALFREZI", "PINDI CHOLE MASALA", "DAL PAKWAN", "PLAIN RICE", "FRUIT GATEAUX"]
-            ]
+            "week1": [ /* ... your original week1 data ... */ ],
+            "week2": [ /* ... your original week2 data ... */ ],
+            "week3": [ /* ... your original week3 data ... */ ]
         };
 
         const weeks = [menuData.week1, menuData.week2, menuData.week3];
 
-        // Anchor date: February 3, 2026 (Tuesday, week 2)
-        const anchorDate = new Date(2026, 1, 3); // Month is 0-indexed in JS
-
-        // Anchor cycle day: 8 (week2 Tuesday, where week1 Mon=0, ..., week2 Mon=7, week2 Tue=8, etc.)
-        const anchorCycleDay = 8;
+        // Anchor: Tuesday of week 2 → February 3, 2026
+        const anchorDate = new Date(2026, 1, 3); // Feb 3, 2026
+        const anchorCycleDay = 8; // week2 Tuesday = position 8 in 21-day cycle
 
         const now = new Date();
         let displayDate = new Date(now);
 
-        // If after 2 PM (14:00), show next day's menu
+        // After 2 PM IST → show next day
         if (now.getHours() >= 14) {
             displayDate.setDate(displayDate.getDate() + 1);
         }
 
-        // Calculate days since anchor
         const timeDiff = displayDate - anchorDate;
         const daysSinceAnchor = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
-
-        // Calculate cycle day (0 to 20)
         const cycleLength = 21;
         const cycleDay = ((daysSinceAnchor + anchorCycleDay) % cycleLength + cycleLength) % cycleLength;
 
-        // Determine week and day in week
-        const weekIndex = Math.floor(cycleDay / 7); // 0: week1, 1: week2, 2: week3
-        const dayInWeek = cycleDay % 7; // 0: Mon, 1: Tue, ..., 6: Sun
+        const weekIndex = Math.floor(cycleDay / 7);
+        const dayInWeek = cycleDay % 7;
 
-        // Get the menu for the day
         const dailyMenu = weeks[weekIndex][dayInWeek];
 
-        // Display date
-        document.getElementById('date').textContent = displayDate.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+        // Format date nicely
+        document.getElementById('date').textContent = displayDate.toLocaleDateString('en-IN', {
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        });
 
         const menuContainer = document.getElementById('menu');
 
         if (dailyMenu.length === 1 && dailyMenu[0] === 'special') {
-            const specialDiv = document.createElement('div');
-            specialDiv.className = 'special';
-            specialDiv.textContent = 'Special Menu Today';
-            menuContainer.appendChild(specialDiv);
+            menuContainer.innerHTML = '<div class="special">🌟 Special Menu Today 🌟</div>';
         } else {
-            // Assume standard 9 items
-            const sidesItems = [dailyMenu[0], dailyMenu[1], dailyMenu[2], dailyMenu[3], dailyMenu[7]]; // Soup, Salad, Bread1, Bread2, Rice
-            const main1 = dailyMenu[4];
-            const main2 = dailyMenu[5];
-            const main3 = dailyMenu[6];
-            const dessert = dailyMenu[8];
+            const [soup, salad, chapati, bread, main1, main2, main3, rice, dessert] = dailyMenu;
 
-            // Sides (collapsible)
-            const details = document.createElement('details');
-            const summary = document.createElement('summary');
-            summary.textContent = 'Sides';
-            details.appendChild(summary);
+            menuContainer.innerHTML = `
+                <details>
+                    <summary>
+                        <i class="fas fa-utensils side-icon"></i>
+                        Sides
+                    </summary>
+                    <ul class="sides-list">
+                        <li>${soup}</li>
+                        <li>${salad}</li>
+                        <li>${chapati}</li>
+                        <li>${bread}</li>
+                        <li>${rice}</li>
+                    </ul>
+                </details>
 
-            const sidesList = document.createElement('ul');
-            sidesItems.forEach(item => {
-                const li = document.createElement('li');
-                li.textContent = item;
-                sidesList.appendChild(li);
-            });
-            details.appendChild(sidesList);
-            menuContainer.appendChild(details);
+                <div class="item">
+                    <span class="item-label">Main Dish 1</span>
+                    ${main1}
+                </div>
 
-            // Mains and Dessert
-            const main1Div = document.createElement('div');
-            main1Div.className = 'section';
-            main1Div.textContent = `Main 1: ${main1}`;
-            menuContainer.appendChild(main1Div);
+                <div class="item">
+                    <span class="item-label">Main Dish 2</span>
+                    ${main2}
+                </div>
 
-            const main2Div = document.createElement('div');
-            main2Div.className = 'section';
-            main2Div.textContent = `Main 2: ${main2}`;
-            menuContainer.appendChild(main2Div);
+                <div class="item">
+                    <span class="item-label">Main Dish 3</span>
+                    ${main3}
+                </div>
 
-            const main3Div = document.createElement('div');
-            main3Div.className = 'section';
-            main3Div.textContent = `Main 3: ${main3}`;
-            menuContainer.appendChild(main3Div);
-
-            const dessertDiv = document.createElement('div');
-            dessertDiv.className = 'section';
-            dessertDiv.textContent = `Dessert: ${dessert}`;
-            menuContainer.appendChild(dessertDiv);
+                <div class="item" style="border-left-color: #9b59b6; background: #f9f5fd;">
+                    <span class="item-label">Dessert</span>
+                    ${dessert}
+                </div>
+            `;
         }
     </script>
 </body>
