@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Daily Menu 🍲</title>
+    <title>Daily Lunch Menu 🍲</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <style>
         :root {
@@ -14,7 +14,13 @@
             --dark: #2c3e50;
             --shadow: 0 8px 25px rgba(0,0,0,0.12);
         }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
             font-family: 'Segoe UI', system-ui, sans-serif;
             background: linear-gradient(135deg, #fdfbfb 0%, #f7f4f4 100%);
@@ -23,10 +29,30 @@
             padding: 20px 15px;
             line-height: 1.6;
         }
-        .container { max-width: 700px; margin: 0 auto; }
-        header { text-align: center; margin-bottom: 30px; }
-        h1 { color: var(--primary-dark); font-size: 2.4rem; margin-bottom: 8px; font-weight: 700; text-shadow: 1px 1px 3px rgba(0,0,0,0.1); }
-        .subtitle { color: var(--gray); font-size: 1.1rem; }
+
+        .container {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            color: var(--primary-dark);
+            font-size: 2.4rem;
+            margin-bottom: 8px;
+            font-weight: 700;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .subtitle {
+            color: var(--gray);
+            font-size: 1.1rem;
+        }
+
         .date-card {
             background: white;
             border-radius: 16px;
@@ -36,7 +62,13 @@
             text-align: center;
             border: 1px solid rgba(230, 126, 34, 0.15);
         }
-        .date { font-size: 1.5rem; font-weight: 600; color: var(--primary-dark); }
+
+        .date {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--primary-dark);
+        }
+
         .menu-card {
             background: white;
             border-radius: 16px;
@@ -44,12 +76,14 @@
             box-shadow: var(--shadow);
             border: 1px solid rgba(230, 126, 34, 0.12);
         }
+
         details {
             margin-bottom: 18px;
             border-radius: 12px;
             overflow: hidden;
             transition: all 0.3s ease;
         }
+
         summary {
             background: linear-gradient(to right, #fff8f0, #fff5e6);
             padding: 16px 20px;
@@ -62,22 +96,39 @@
             user-select: none;
             transition: background 0.2s;
         }
-        summary:hover { background: #fff0d9; }
-        summary::marker { display: none; }
-        details[open] summary { background: #ffe8cc; }
-        .side-icon { font-size: 1.3rem; }
+
+        summary:hover {
+            background: #fff0d9;
+        }
+
+        summary::marker {
+            display: none;
+        }
+
+        details[open] summary {
+            background: #ffe8cc;
+        }
+
+        .side-icon {
+            font-size: 1.3rem;
+        }
+
         .sides-list {
             padding: 16px 20px;
             background: #fdfaf5;
             list-style: none;
         }
+
         .sides-list li {
             padding: 10px 0;
             border-bottom: 1px solid rgba(230, 126, 34, 0.08);
             color: #444;
-            word-break: break-word;
         }
-        .sides-list li:last-child { border-bottom: none; }
+
+        .sides-list li:last-child {
+            border-bottom: none;
+        }
+
         .item {
             background: #fff8f2;
             border-radius: 12px;
@@ -85,12 +136,13 @@
             margin-bottom: 16px;
             border-left: 5px solid var(--primary);
             transition: all 0.2s ease;
-            word-break: break-word;
         }
+
         .item:hover {
             transform: translateY(-3px);
             box-shadow: 0 12px 30px rgba(230, 126, 34, 0.12);
         }
+
         .item-label {
             font-weight: 700;
             color: var(--primary-dark);
@@ -98,6 +150,7 @@
             display: block;
             font-size: 1.1rem;
         }
+
         .special {
             text-align: center;
             font-size: 1.5rem;
@@ -108,6 +161,7 @@
             border-radius: 16px;
             border: 2px dashed var(--primary);
         }
+
         @media (max-width: 500px) {
             h1 { font-size: 2rem; }
             .date { font-size: 1.3rem; }
@@ -117,97 +171,60 @@
 <body>
     <div class="container">
         <header>
-            <h1 id="menuTitle">Lunch Menu</h1>
+            <h1>Lunch Menu</h1>
             <div class="subtitle">What's cooking today? 🍛</div>
         </header>
+
         <div class="date-card">
             <div class="date" id="date"></div>
         </div>
+
         <div class="menu-card" id="menu"></div>
     </div>
 
     <script>
-        const menuData = {
-            week1: {
-                lunch: [
-                    ["BROCCOLI CORIANDER SOUP", "GREEN SALAD", "CHAPATI", "BREAD ROLL", "CHEESEY BAKED PASTA", "PANEER KOFTA CURRY", "SULTANI DAL", "GULAB JAMUN"],
-                    ["VEG CLEAR SOUP", "BLACK CHANA SUNDAL", "CHAPATI", "GARLIC ROLL", "BUTTERED VEG RICE", "PUNJABI ALOO GOBI MASALA", "DAL MAHARAJA", "MILK CAKE"],
-                    ["CABBAGE BROTH", "CUCUMBER MINT SALAD", "CHAPATI", "BREAD ROLL", "KOREAN STYLE STIR FRIED NOODLES", "VEG MAKHANWALA", "RAJASTHANI DAL", "ICE CREAM"],
-                    ["MANCHOW SOUP", "KOSUMBARI SALAD", "CHAPATI", "FRENCH LOAF", "ROASTED ITALIAN VEG", "AMRITSARI CHOLE MASALA", "SAMBAR", "PINEAPPLE PASTRY"],
-                    ["special"],
-                    ["MINESTRONE SOUP", "GREEN SALAD", "MOOLI PARATHA", "BREAD ROLL", "CHILLI CAULIFLOWER", "PARWAL ALOO", "DAL TIRANGI", "RASGULLA"],
-                    ["SWEET CORN VEG SOUP", "LACHHAA ONION SALAD", "BHATURA", "ROASTED POTATO WEDGES", "PINDI CHOLE", "BUTTER CHICKEN", "DAL DHANSAK", "CHOCOLATE SQUARE"]
-                ],
-                dinner: [
-                    ["CAESAR SALAD", "CHAPATI", "CABBAGE & CARROT FOOGATH", "BHINDI DO PYAZA", "AMTI DAL", "CHICKEN ALOO JHOL", "EGGLESS STRAWBERRY PASTRY"],
-                    ["COLESLAW SALAD", "VEG BURGER", "FRENCH FRIES", "PANEER BHURJI", "PALAK MATAR", "KASHMIRI DAL", "CHICKEN BURGER", "SOOJI PAYASAM"],
-                    ["WEDNESDAY SPECIAL DINNER"],
-                    ["FATTUSH SALAD", "MASALA KULCHA", "CHILLI PANEER", "DUM ALOO KASHMIRI", "KHATTA MEETHA DAL", "CHILLY CHICKEN", "BREAD BUTTER PUDDING"],
-                    ["RUSSIAN SALAD", "CHAPATI", "BREAD ROLL", "VEG CROQUETTES", "METHI MUTTER MASALA", "DAL MAKHANI", "MALVANI FISH CURRY", "CARROT HALWA"],
-                    ["CORN & CUCUMBER SALAD", "CHAPATI", "GARLIC LOAF", "HONEY GLAZED ROASTED VEG", "ALOO BAINGAN MASALA", "DAL FRY", "CHICKEN STROGANOFF", "BROWNIE"],
-                    ["CUCUMBER SALAD", "ROASTED PAV", "VEG BHAAJI", "VEGETABLE 65", "DHABA DAL", "CHICKEN KHEEMA MASALA", "CHOCOLATE MOUSSE"]
-                ]
-            },
-            week2: {
-                lunch: [
-                    ["POTATO & LEEKS BROTH", "GREEN GODDESS SALAD", "CHAPATI", "BREAD ROLL", "PESTO PASTA", "ALOO MIRCHI MAKHAI LAJAWAB", "DAL MAKHANI", "JELLY (Gelatin only)"],
-                    ["TOM YUM SOUP", "TOSSED VEG IN LEMON VINAIGRETTE", "CHAPATI", "BROWN ONION BREAD ROLL", "BAKED VEG WITH SWEET POTATO", "VEG LABABDAR", "SAMBAR", "JALEBI"],
-                    ["CREAM OF GREEN PEAS SOUP", "KUCHUMBER SALAD", "CHAPATI", "BREAD ROLL", "STIR FRY THAI VEG", "RAJASTHANI RAJMA MASALA", "MASALA DAL FRY", "COLUMBIAN COFFEE CAKE"],
-                    ["VEG SHORBA", "SPROUTS SALAD", "CHAPATI", "MULTIGRAIN BREAD ROLL", "TEX MEX FRIED RICE", "DAHI BHINDI CURRY", "GREEN MOONG DAL TADKA", "MOTICHOOR LADOO"],
-                    ["special"],
-                    ["HOT & SOUR VEG SOUP", "CUCUMBER MINT SALAD", "CHAPATI", "BREAD ROLL", "GOBI MANCHURIAN", "MUTTER PANEER", "DAL MAHARANI", "BROWNIE"],
-                    ["CREAM OF TOMATO SOUP", "RUSSIAN SALAD", "VEG QUESADILLAS", "CHICKEN QUESADILLAS", "CAULIFLOWER 65", "ALOO JEERA DRY", "PALAK DAL", "KALA JAMUN"]
-                ],
-                dinner: [
-                    ["GRILLED POTATO SALAD", "CHAPATI", "BEANS PORIYAL", "GOBI MOUSSALAM", "HARA METHI DAL", "HANDI MURGH", "EGGLESS COFFEE PASTRY"],
-                    ["GREEK SALAD", "TOMATO BRUSCHETTA", "SPAGHETTI", "VEG BOLOGNESE", "PALAK CHANNA", "GUJARATI DAL", "CHICKEN BOLOGNEISE", "PHIRNEE"],
-                    ["WEDNESDAY SPECIAL DINNER"],
-                    ["MEXICAN CORN SALAD", "CHAPATI", "VEG VOL AU VENT", "ALOO JEERA", "DAL MAKHANI", "DHABA MURGH", "MINI GULAB JAMUN"],
-                    ["SOM TOM SALAD", "CHAPATI", "TARTAR SAUCE", "FRENCH FRIES", "VEG DO PYAZA", "ARAHAR DAL", "CRUMBED FRIED FISH", "BLUEBERRY CHEESE CAKE"],
-                    ["GREEN SALAD", "METHI THEPLA", "OVEN BAKED VEGETABLES", "MIRCHI KA SALAN", "DALCHA", "CHICKEN DUM BIRYANI", "ICE CREAM"],
-                    ["TOSSED SALAD", "BREAD ROLL", "VEG AU GRATIN", "TOMATO SEV", "JEERA DAL", "PEPPER CHICKEN MASALA", "MOONG DAL PAYASAM"]
-                ]
-            },
-            week3: {
-                lunch: [
-                    ["HOT & SOUR VEG SOUP", "GREEN SALAD", "CHAPATI", "BREAD ROLL", "SCHEZWAN NOODLES", "ACHARI BHINDI", "PUNJABI DAL", "MYSORE PAK"],
-                    ["CREAM OF VEG SOUP", "GREEN MOONG DAL SUNDAL", "CHAPATI", "ONION CHEESE ROLL", "PASTA IN PINK SAUCE", "ALOO CHOLE MASALA", "SAMBAR", "CHOCOLATE TRUFFLE PASTRY"],
-                    ["CAULIFLOWER BROTH", "VEG JULIENNE SALAD", "CHAPATI", "BREAD ROLL", "BAKED VEG MEXICANA", "KADI PAKODI", "DAL BHUKARA", "SWEET BOONDI"],
-                    ["ROASTED PUMPKIN SOUP", "CUCUMBER YOGURT SALAD", "CHAPATI", "CUSTARD FRENCH LOAF", "SAUTÉD ORIENTAL VEG", "KADAI PANEER", "MOONG DAL TADKA", "MANGO BURFI"],
-                    ["special"],
-                    ["VEG CLEAR SOUP", "INDIAN VEG SALAD", "ALOO PARATHA", "BREAD ROLL", "RATATOUILLE", "VEG AWADI KHORMA", "SUKHI METHI DAL", "ANGURI RABDI"],
-                    ["RASAM", "LACCHA ONION SALAD", "BHATURA", "MEDITERRANEAN VEG STEW", "CHICKEN JALFREZI", "PINDI CHOLE MASALA", "DAL PAKWAN", "FRUIT GATEAUX"]
-                ],
-                dinner: [
-                    ["ALOO CHANA CHAT", "BUTTER NAAN", "HERB SCENTED VEGETABLES", "KANDHARI PANEER", "CARAMALIZED ONION DAL", "CHICKEN LAL MASS", "RICE KHEER"],
-                    ["ITALIAN VEG & TOMATO SALAD", "CHAPATI", "GARLIC BREAD", "HUMMUS", "LOBIYA MASALA", "DAL MAKHANI", "JAMAICAN JERK CHICKEN", "MOTI PAK"],
-                    ["WEDNESDAY SPECIAL DINNER"],
-                    ["FRIED NOODLES SALAD", "CHAPATI", "BREAD ROLL", "YAM CUTLET", "RAJMAH MASALA", "PUMPKIN DAL", "TAI PAI CHICKEN", "EGGLESS CHOCOLATE CAKE"],
-                    ["PANZANELLA SALAD", "CHAPATI", "GRILLED POTATO WEDGES", "CABBAGE MUTTER CURRY", "KALI DAL", "MUTTON VINDALOO", "COCONUT BURFI"],
-                    ["FRUIT & VEG SALAD", "CHAPATI", "VEG PIZZA", "BHINDI BOONDHI FRY", "DUMKI DAL", "CHICKEN PIZZA", "WHITE CHOCOLATE BANANA MOUSSE"],
-                    ["SALAD ZANZIBAR", "PAV", "VEG BHAJI", "ALOO PALAK KI SUBZI", "TOMATO DAL", "CHICKEN FAJITAS", "SEMIYA PAYASAM"]
-                ]
-            }
+const menuData = {
+            "week1": [
+                ["BROCCOLI CORIANDER SOUP", "GREEN SALAD", "CHAPATI", "BREAD ROLL", "CHEESEY BAKED PASTA", "PANEER KOFTA CURRY", "SULTANI DAL", "PLAIN RICE", "GULAB JAMUN"],
+                ["VEG CLEAR SOUP", "BLACK CHANA SUNDAL", "CHAPATI", "GARLIC ROLL", "BUTTERED VEG RICE", "PUNJABI ALOO GOBI MASALA", "DAL MAHARAJA", "PLAIN RICE", "MILK CAKE"],
+                ["CABBAGE BROTH", "CUCUMBER MINT SALAD", "CHAPATI", "BREAD ROLL", "KOREAN STYLE STIR FRIED NOODLES", "VEG MAKHANWALA", "RAJASTHANI DAL", "PLAIN RICE", "ICE CREAM"],
+                ["MANCHOW SOUP", "KOSUMBARI SALAD", "CHAPATI", "FRENCH LOAF", "ROASTED ITALIAN VEG", "AMRITSARI CHOLE MASALA", "SAMBAR", "PLAIN RICE", "PINEAPPLE PASTRY"],
+                ["special"],
+                ["MINESTRONE SOUP", "GREEN SALAD", "MOOLI PARATHA", "BREAD ROLL", "CHILLI CAULIFLOWER", "PARWAL ALOO", "DAL TIRANGI", "PLAIN RICE", "RASGULLA"],
+                ["SWEET CORN VEG SOUP", "LACHHAA ONION SALAD", "BHATURA", "ROASTED POTATO WEDGES", "PINDI CHOLE", "BUTTER CHICKEN", "DAL DHANSAK", "PLAIN RICE", "CHOCOLATE SQUARE"]
+            ],
+            "week2": [
+                ["POTATO & LEEKS BROTH", "GREEN GODDESS SALAD", "CHAPATI", "BREAD ROLL", "PESTO PASTA", "ALOO MIRCHI MAKHAI LAJAWAB", "DAL MAKHANI", "PLAIN RICE", "JELLY (Gelatin only)"],
+                ["TOM YUM SOUP", "TOSSED VEG IN LEMON VINAIGRETTE", "CHAPATI", "BROWN ONION BREAD ROLL", "BAKED VEG WITH SWEET POTATO", "VEG LABABDAR", "SAMBAR", "PLAIN RICE", "JALEBI"],
+                ["CREAM OF GREEN PEAS SOUP", "KUCHUMBER SALAD", "CHAPATI", "BREAD ROLL", "STIR FRY THAI VEG", "RAJASTHANI RAJMA MASALA", "MASALA DAL FRY", "PLAIN RICE", "COLUMBIAN COFFEE CAKE"],
+                ["VEG SHORBA", "SPROUTS SALAD", "CHAPATI", "MULTIGRAIN BREAD ROLL", "TEX MEX FRIED RICE", "DAHI BHINDI CURRY", "GREEN MOONG DAL TADKA", "PLAIN RICE", "MOTICHOOR LADOO"],
+                ["special"],
+                ["HOT & SOUR VEG SOUP", "CUCUMBER MINT SALAD", "CHAPATI", "BREAD ROLL", "GOBI MANCHURIAN", "MUTTER PANEER", "DAL MAHARANI", "PLAIN RICE", "BROWNIE"],
+                ["CREAM OF TOMATO SOUP", "RUSSIAN SALAD", "VEG QUESADILLAS", "CHICKEN QUESADILLAS", "CAULIFLOWER 65", "ALOO JEERA DRY", "PALAK DAL", "PLAIN RICE", "KALA JAMUN"]
+            ],
+            "week3": [
+                ["HOT & SOUR VEG SOUP", "GREEN SALAD", "CHAPATI", "BREAD ROLL", "SCHEZWAN NOODLES", "ACHARI BHINDI", "PUNJABI DAL", "PLAIN RICE", "MYSORE PAK"],
+                ["CREAM OF VEG SOUP", "GREEN MOONG DAL SUNDAL", "CHAPATI", "ONION CHEESE ROLL", "PASTA IN PINK SAUCE", "ALOO CHOLE MASALA", "SAMBAR", "PLAIN RICE", "CHOCOLATE TRUFFLE PASTRY"],
+                ["CAULIFLOWER BROTH", "VEG JULIENNE SALAD", "CHAPATI", "BREAD ROLL", "BAKED VEG MEXICANA", "KADI PAKODI", "DAL BHUKARA", "PLAIN RICE", "SWEET BOONDI"],
+                ["ROASTED PUMPKIN SOUP", "CUCUMBER YOGURT SALAD", "CHAPATI", "CUSTARD FRENCH LOAF", "SAUTÉD ORIENTAL VEG", "KADAI PANEER", "MOONG DAL TADKA", "PLAIN RICE", "MANGO BURFI"],
+                ["special"],
+                ["VEG CLEAR SOUP", "INDIAN VEG SALAD", "ALOO PARATHA", "BREAD ROLL", "RATATOUILLE", "VEG AWADI KHORMA", "SUKHI METHI DAL", "PLAIN RICE", "ANGURI RABDI"],
+                ["RASAM", "LACCHA ONION SALAD", "BHATURA", "MEDITERRANEAN VEG STEW", "CHICKEN JALFREZI", "PINDI CHOLE MASALA", "DAL PAKWAN", "PLAIN RICE", "FRUIT GATEAUX"]
+            ]
         };
 
         const weeks = [menuData.week1, menuData.week2, menuData.week3];
 
-        const anchorDate = new Date(2026, 1, 3); // Feb 3, 2026 – Tuesday
-        const anchorCycleDay = 8; // week 2 position in 0-based 21-day cycle
+        // Anchor: Tuesday of week 2 → February 3, 2026
+        const anchorDate = new Date(2026, 1, 3); // Feb 3, 2026
+        const anchorCycleDay = 8; // week2 Tuesday = position 8 in 21-day cycle
 
         const now = new Date();
         let displayDate = new Date(now);
-        let isDinner = false;
 
-        const hour = now.getHours();
-        if (hour >= 21) {
+        // After 2 PM IST → show next day
+        if (now.getHours() >= 14) {
             displayDate.setDate(displayDate.getDate() + 1);
-            document.getElementById('menuTitle').textContent = 'Lunch Menu';
-        } else if (hour >= 14) {
-            isDinner = true;
-            document.getElementById('menuTitle').textContent = 'Dinner Menu';
-        } else {
-            document.getElementById('menuTitle').textContent = 'Lunch Menu';
         }
 
         const timeDiff = displayDate - anchorDate;
@@ -218,11 +235,9 @@
         const weekIndex = Math.floor(cycleDay / 7);
         const dayInWeek = cycleDay % 7;
 
-        const selectedWeek = weeks[weekIndex] || weeks[0];
-        const dailyMenuRaw = (isDinner ? selectedWeek.dinner : selectedWeek.lunch)[dayInWeek] || [];
+        const dailyMenu = weeks[weekIndex][dayInWeek];
 
-        const dailyMenu = dailyMenuRaw.map(item => (typeof item === 'string' ? item.trim() : '')).filter(Boolean);
-
+        // Format date nicely
         document.getElementById('date').textContent = displayDate.toLocaleDateString('en-IN', {
             weekday: 'long',
             year: 'numeric',
@@ -232,72 +247,44 @@
 
         const menuContainer = document.getElementById('menu');
 
-        if (dailyMenu.length === 0 || dailyMenu.some(item => item.toLowerCase().includes('special'))) {
+        if (dailyMenu.length === 1 && dailyMenu[0] === 'special') {
             menuContainer.innerHTML = '<div class="special">🌟 Special Menu Today 🌟</div>';
-            return;
-        }
-
-        // ────────────────────────────────────────────────
-        //                  LUNCH – fixed order
-        // ────────────────────────────────────────────────
-        if (!isDinner) {
-            const [soup = '', salad = '', chapati = '', bread = '', main1 = '', main2 = '', dal = '', dessert = ''] = dailyMenu;
+        } else {
+            const [soup, salad, chapati, bread, main1, main2, main3, rice, dessert] = dailyMenu;
 
             menuContainer.innerHTML = `
-                <details open>
-                    <summary><i class="fas fa-utensils side-icon"></i> Sides</summary>
+                <details>
+                    <summary>
+                        <i class="fas fa-utensils side-icon"></i>
+                        Sides
+                    </summary>
                     <ul class="sides-list">
-                        <li>${soup || '—'}</li>
-                        <li>${salad || '—'}</li>
-                        <li>${chapati || '—'}</li>
-                        <li>${bread || '—'}</li>
+                        <li>${soup}</li>
+                        <li>${salad}</li>
+                        <li>${chapati}</li>
+                        <li>${bread}</li>
+                        <li>${rice}</li>
                     </ul>
                 </details>
-                <div class="item"><span class="item-label">Main Dish 1</span>${main1 || '—'}</div>
-                <div class="item"><span class="item-label">Main Dish 2</span>${main2 || '—'}</div>
-                <div class="item"><span class="item-label">Dal</span>${dal || '—'}</div>
-                <div class="item" style="border-left-color: #9b59b6; background: #f9f5fd;">
-                    <span class="item-label">Dessert</span>${dessert || '—'}
+
+                <div class="item">
+                    <span class="item-label">Main Dish 1</span>
+                    ${main1}
                 </div>
-            `;
-        }
 
-        // ────────────────────────────────────────────────
-        //                  DINNER – structural order, no keywords
-        // ────────────────────────────────────────────────
-        else {
-            const len = dailyMenu.length;
+                <div class="item">
+                    <span class="item-label">Main Dish 2</span>
+                    ${main2}
+                </div>
 
-            const dessert = len >= 1 ? dailyMenu[len - 1] : '—';
-            const nonVeg = (len >= 2 && dailyMenu[len - 2].toLowerCase().includes('chicken') || 
-                            dailyMenu[len - 2].toLowerCase().includes('fish') || 
-                            dailyMenu[len - 2].toLowerCase().includes('mutton') || 
-                            dailyMenu[len - 2].toLowerCase().includes('egg')) ? dailyMenu[len - 2] : '';
+                <div class="item">
+                    <span class="item-label">Main Dish 3</span>
+                    ${main3}
+                </div>
 
-            let dalIndex = len - (nonVeg ? 3 : 2);
-            let vegIndex = len - (nonVeg ? 4 : 3);
-
-            const dal = dalIndex >= 1 ? dailyMenu[dalIndex] : '—';
-            const indianVeg = vegIndex >= 1 ? dailyMenu[vegIndex] : '—';
-
-            const salad = len >= 1 ? dailyMenu[0] : '—';
-            const middle = dailyMenu.slice(1, vegIndex).filter(Boolean);
-
-            const sides = [salad];
-            if (middle.length) sides.push(middle.join(', '));
-
-            menuContainer.innerHTML = `
-                <details open>
-                    <summary><i class="fas fa-utensils side-icon"></i> Sides</summary>
-                    <ul class="sides-list">
-                        ${sides.map(s => `<li>${s || '—'}</li>`).join('')}
-                    </ul>
-                </details>
-                <div class="item"><span class="item-label">Indian Veg</span>${indianVeg || '—'}</div>
-                <div class="item"><span class="item-label">Dal / Lentil</span>${dal || '—'}</div>
-                ${nonVeg ? `<div class="item"><span class="item-label">Non-Veg</span>${nonVeg}</div>` : ''}
                 <div class="item" style="border-left-color: #9b59b6; background: #f9f5fd;">
-                    <span class="item-label">Dessert</span>${dessert}
+                    <span class="item-label">Dessert</span>
+                    ${dessert}
                 </div>
             `;
         }
